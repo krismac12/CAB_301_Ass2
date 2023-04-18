@@ -66,16 +66,55 @@ public class MovieCollection : IMovieCollection
 
 	public bool Insert(IMovie movie)
 	{
+		// create node of movie to insert
 		BTreeNode newNode = new BTreeNode(movie);
+
+		// make node root if there are no movies
 		if (root == null)
         {
 			root = newNode;
-			Console.WriteLine("Empty");
 			count++;
         }
-        else
+		BTreeNode current = root;
+
+		// traverse the binary tree
+		while(current != null)
         {
-			Console.WriteLine(root.Movie.Title);
+			if(movie.CompareTo(current.Movie) < 0)
+            {
+				// set left child of current as newNode
+				if(current.LChild == null)
+                {
+					current.LChild = newNode;
+					count++;
+					return true;
+                }
+				// set current node as left child
+                else
+                {
+					current = current.LChild;
+                }
+            }
+			else if(movie.CompareTo(current.Movie) > 0)
+            {
+				// set right child of current as newNode
+				if (current.RChild == null)
+				{
+					current.RChild = newNode;
+					count++;
+					return true;
+				}
+				// set current node as right child
+				else
+				{
+					current = current.RChild;
+				}
+			}
+			// If the new movie is equal to the current node's movie, return false (no duplicates allowed)
+			else
+			{
+				return false;
+            }
         }
 		return false;
     }
@@ -93,8 +132,41 @@ public class MovieCollection : IMovieCollection
 
 	public IMovie? Search(string movietitle)
 	{
-		return new Movie("");
 
+		Movie movie = new Movie(movietitle);
+		if(root == null)
+        {
+			return null;
+        }
+		BTreeNode current = root;
+
+		while(current.Movie.Title != movietitle)
+        {
+			if (movie.CompareTo(current.Movie) < 0)
+			{
+				if (current.LChild == null)
+				{
+					return null;
+				}
+				else
+				{
+					current = current.LChild;
+				}
+			}
+
+			if (movie.CompareTo(current.Movie) > 0)
+			{
+				if (current.RChild == null)
+				{
+					return null;
+				}
+				else
+				{
+					current = current.RChild;
+				}
+			}
+		}
+		return current.Movie;
 	}
 
 
