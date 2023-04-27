@@ -8,17 +8,26 @@ namespace Cab301_Ass2
         {
             MovieClassification movieClassification = MovieClassification.PG;
             MovieGenre genre = MovieGenre.Action;
-            Movie movie1 = new Movie("ZZZ", genre, movieClassification, 120,200);
-            Movie movie2 = new Movie("AAAA");
-            Movie movie3 = new Movie("AAA");
+            Movie movie1 = new Movie("A Movie");
+            Movie movie2 = new Movie("B Movie");
+            Movie movie3 = new Movie("C Movie");
+            Movie movie4 = new Movie("D Movie");
+
+
 
             MovieCollection movieCollection = new MovieCollection();
             movieCollection.Insert(movie2);
-            movieCollection.Insert(movie3);
             movieCollection.Insert(movie1);
+            movieCollection.Insert(movie3);
 
 
-            Console.WriteLine(movieCollection.Search("ZZZ")?.ToString());
+
+
+            Console.WriteLine(movieCollection);
+            movieCollection.Clear();
+            Console.WriteLine(movieCollection);
+
+
 
         }
     }

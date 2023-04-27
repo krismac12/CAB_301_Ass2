@@ -119,15 +119,111 @@ public class MovieCollection : IMovieCollection
 		return false;
     }
 
-
-
-
-	public bool Delete(IMovie movie)
+	private int NumberOfChildren(BTreeNode node)
 	{
-		return false;
-
+		int children = 0;
+		if (node.LChild != null)
+		{
+			children++;
+		}
+		if (node.RChild != null)
+		{
+			children++;
+		}
+		return children;
 	}
 
+	private BTreeNode minRChild()
+    {
+		BTreeNode current = root.RChild;
+		while(current.LChild != null)
+        {
+			current = current.LChild;
+        }
+		return current;
+    }
+	public bool Delete(IMovie movie)
+	{
+		BTreeNode current = root;
+		BTreeNode parent = null;
+
+		while (current.Movie != movie)
+		{
+			parent = current;
+			if (movie.CompareTo(current.Movie) < 0)
+			{
+				if (current.LChild == null)
+				{
+					return false;
+				}
+				else
+				{
+					current = current.LChild;
+				}
+			}
+
+			if (movie.CompareTo(current.Movie) > 0)
+			{
+				if (current.RChild == null)
+				{
+					return false;
+				}
+				else
+				{
+					current = current.RChild;
+				}
+			}
+		}
+
+		int numChildren = NumberOfChildren(current);
+
+		if (numChildren == 0)
+        {
+			if (current == root)
+			{
+				root = null;
+				return true;
+			}
+			else if (parent.LChild == current)
+			{
+				parent.LChild = null;
+				return true;
+			}
+			else
+			{
+				parent.RChild = null;
+				return true;
+			}
+		}
+
+		else if (numChildren == 1)
+		{
+			BTreeNode child = (current.LChild != null) ? current.LChild : current.RChild;
+			if (current == root)
+			{
+				root = child;
+				return true;
+			}
+			else if (parent.LChild == current)
+			{
+				parent.LChild = child;
+				return true;
+			}
+			else
+			{
+				parent.RChild = child;
+				return true;
+			}
+		}
+        else
+        {
+			BTreeNode minR = minRChild();
+			IMovie minRMovie = minR.Movie;
+			Delete(minR.Movie);
+			current.Movie = minRMovie;
+			return true;
+        }
+	}
 
 
 	public IMovie? Search(string movietitle)
@@ -183,14 +279,39 @@ public class MovieCollection : IMovieCollection
 		return new IMovie[1];
 
     }
+	private void ClearRecursive(BTreeNode node)
+	{
+		if (node == null)
+		{
+			return;
+		}
 
+		ClearRecursive(node.LChild);
+		ClearRecursive(node.RChild);
 
+		node.LChild = null;
+		node.RChild = null;
+
+		count--;
+	}
 	public void Clear()
 	{
+		if (root == null)
+		{
+			return;
+		}
 
-        //To be completed by students
+		ClearRecursive(root.LChild);
+		ClearRecursive(root.RChild);
 
-    }
+		root.LChild = null;
+		root.RChild = null;
+
+		root = null;
+
+		count--;
+
+	}
 }
 
 
