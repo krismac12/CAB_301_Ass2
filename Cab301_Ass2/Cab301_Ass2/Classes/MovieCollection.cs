@@ -266,10 +266,22 @@ public class MovieCollection : IMovieCollection
 	}
 
 
-
+	public int recursiveSearch(BTreeNode node)
+    {
+		if(node == null)
+        {
+			return 0;
+        }
+        else
+        {
+			int LeftSum = recursiveSearch(node.LChild);
+			int RightSum = recursiveSearch(node.RChild);
+			return node.Movie.TotalCopies + LeftSum + RightSum;
+		}
+    }
     public int NoDVDs()
 	{
-		return 0;
+		return recursiveSearch(root);
     }
 
    

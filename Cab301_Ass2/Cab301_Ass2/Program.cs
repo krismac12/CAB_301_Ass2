@@ -8,10 +8,10 @@ namespace Cab301_Ass2
         {
             MovieClassification movieClassification = MovieClassification.PG;
             MovieGenre genre = MovieGenre.Action;
-            Movie movie1 = new Movie("A Movie");
-            Movie movie2 = new Movie("B Movie");
-            Movie movie3 = new Movie("C Movie");
-            Movie movie4 = new Movie("D Movie");
+            Movie movie1 = new Movie("A Movie",MovieGenre.Action,MovieClassification.G,120,10);
+            Movie movie2 = new Movie("B Movie", MovieGenre.Action, MovieClassification.G, 120, 20);
+            Movie movie3 = new Movie("C Movie", MovieGenre.Action, MovieClassification.G, 120, 0);
+            Movie movie4 = new Movie("D Movie", MovieGenre.Action, MovieClassification.G, 120, 10);
 
 
 
@@ -19,13 +19,12 @@ namespace Cab301_Ass2
             movieCollection.Insert(movie2);
             movieCollection.Insert(movie1);
             movieCollection.Insert(movie3);
+            movieCollection.Insert(movie4);
 
 
 
 
-            Console.WriteLine(movieCollection);
-            movieCollection.Clear();
-            Console.WriteLine(movieCollection);
+            Console.WriteLine(movieCollection.NoDVDs());
 
 
 
