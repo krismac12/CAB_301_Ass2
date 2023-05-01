@@ -266,7 +266,7 @@ public class MovieCollection : IMovieCollection
 	}
 
 
-	public int recursiveSearch(BTreeNode node)
+	private int recursiveSearch(BTreeNode node)
     {
 		if(node == null)
         {
@@ -284,13 +284,33 @@ public class MovieCollection : IMovieCollection
 		return recursiveSearch(root);
     }
 
-   
     public IMovie[] ToArray()
 	{
+		if (root == null)
+		{
+			return new IMovie[0];
+		}
+		else
+		{
+			IMovie[] result = new IMovie[this.count];
+			int index = 0;
+			fill_array_in_order(root, result, ref index);
+			return result;
+		}
 
-		return new IMovie[1];
+	}
 
-    }
+	private static void fill_array_in_order(BTreeNode node, IMovie[] result, ref int index)
+	{
+		if (node != null)
+		{
+			fill_array_in_order(node.LChild, result, ref index);
+			result[index] = node.Movie;
+			index++;
+			fill_array_in_order(node.RChild, result, ref index);
+		}
+	}
+
 	private void ClearRecursive(BTreeNode node)
 	{
 		if (node == null)

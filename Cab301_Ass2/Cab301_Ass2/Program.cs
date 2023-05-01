@@ -24,8 +24,12 @@ namespace Cab301_Ass2
 
 
 
-            Console.WriteLine(movieCollection.NoDVDs());
+            IMovie[] arr = movieCollection.ToArray();
 
+            foreach (IMovie movie in arr)
+            {
+                Console.WriteLine(movie.ToString());
+            }
 
 
         }
